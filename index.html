@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>JS Playground</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Andika+New+Basic&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./styles.css"> 
+	<link
+		rel="stylesheet"
+		data-name="vs/editor/editor.main"
+		href="./monaco-editor/vs/editor/editor.main.css"
+	/>
+</head>
+<body>
+	<main id="app">
+		<nav id="app-nav">
+			<h1>JS Playground</h1>
+		</nav>
+		<section id="code-area"></section>
+		<div class="sizer"></div>
+		<section id="output-area">
+			<div>
+				<h1>Returned Values: </h1>
+				<pre id="code-result"></pre>
+			</div>
+			<div>
+				<h1>Logged Output: </h1>
+				<pre id="logged-result"></pre>
+			</div>
+		</section>
+		<footer id="app-footer">
+			<p>Copyright &copy; 2021</p>
+		</footer>
+	</main>
+
+	<script>
+		var require = { paths: { vs: './monaco-editor/vs' } };
+	</script>
+	<script src="./monaco-editor/vs/loader.js"></script>
+	<script src="./monaco-editor/vs/editor/editor.main.nls.js"></script>
+	<script src="./monaco-editor/vs/editor/editor.main.js"></script>
+
+	<script>
+		var editor = monaco.editor.create(document.getElementById('code-area'), {
+			value: '',
+			language: 'javascript'
+		});
+
+		window.onerror = function(error, url, line) {
+		   console.log(error);
+		};
+    console.olog = console.log;
+		console.log = function(message) {
+		    console.olog(message);
+		    document.getElementById('logged-result').append(message);
+		};
+		console.error = console.debug = console.info =  console.log
+
+		function executeCode() {
+			document.getElementById('logged-result').innerText = "";
+			const value = window.editor.getValue();
+			const resultArea = document.getElementById("code-result");
+			try {
+				resultArea.innerText = eval(value);
+			} catch(e) {
+				console.log(e);
+			}
+		}
+
+		function download(data, filename, type) {
+		    var file = new Blob([data], {type: type});
+		    var a = document.createElement("a"),
+		        url = URL.createObjectURL(file);
+		    a.href = url;
+		    a.download = filename;
+		    document.body.appendChild(a);
+		    a.click();
+		    setTimeout(function() {
+		    	document.body.removeChild(a);
+		    	window.URL.revokeObjectURL(url);  
+		    }, 0); 
+		  }
+
+		document.addEventListener("keydown", function(e) {
+		  if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  &&  e.keyCode == 82) {
+		    e.preventDefault();
+		    executeCode();
+		  } else if((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  &&  e.keyCode == 83) {
+		    e.preventDefault();
+		  	executeCode();
+		  	let result = confirm("are you sure you wanna save ?");
+		  	if(result) {
+		  		const value = window.editor.getValue();
+		  		download(value, "code.js", "application/js")
+		  	}
+		  }
+		}, false);
+
+
+	</script>
+</body>
+</html>	

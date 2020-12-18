@@ -1,0 +1,65 @@
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* App layout */
+#app {
+	font-family: 'Andika New Basic', sans-serif;
+	height: 100vh;
+	display: grid;
+	grid-template-rows: 40px auto 30px;
+	grid-template-columns: 1fr 2px 1fr;
+	grid-template-areas: 
+	"nav nav nav"
+	"code-area sizer output-area"
+	"footer footer footer";
+}
+
+#app-nav {
+	background: url(https://lh3.googleusercontent.com/YGJ77qN9KiwctZgfqV8Bf3hNo0rZvcFaPKDTkvtS6kVbtwyCS80Pm6dpXzJCCLZE1Q);
+	background-color: rgba(155,120,150,0.9);
+	background-blend-mode: color-dodge;
+	grid-area: nav
+}
+#app-footer {
+	background: url(https://lh3.googleusercontent.com/YGJ77qN9KiwctZgfqV8Bf3hNo0rZvcFaPKDTkvtS6kVbtwyCS80Pm6dpXzJCCLZE1Q);
+	background-color: rgba(155,120,150,0.9);
+	background-blend-mode: color-dodge;
+	grid-area: footer
+}
+
+#code-area {
+	background-color: rgba(0,0,0,0.1);
+}
+
+#output-area {
+	background: lightgrey;
+}
+
+.sizer {
+	grid-area: sizer;
+	height: 100%;
+	cursor: e-resize;
+	background: black;
+}
+
+/* Nav style */
+#app-nav,
+#app-footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+/* output area */
+#output-area {
+	padding: 10px;
+	display: grid;
+	grid-template-rows: auto auto;
+	max-height: 100%;
+	overflow-y: scroll;
+}
